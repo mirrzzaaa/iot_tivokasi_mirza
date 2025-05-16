@@ -1,17 +1,16 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-
 #include "DHT.h"
 
 #define DHTPIN 27
-#define DHTTYPE DHT22
+#define DHTTYPE DHT11
 
 DHT dht(DHTPIN, DHTTYPE);
 
 // Ganti dengan kredensial WiFi Anda
-const char *ssid = "Wokwi-GUEST";
-const char *password = "";
+const char *ssid = "IWMHK";
+const char *password = "mhk111225";
 
 unsigned long previousMillis = 0;
 const long interval = 5000; // Interval 5 detik (5000 ms)
@@ -61,7 +60,7 @@ void loop()
 
     // Inisialisasi HTTPClient
     HTTPClient http;
-    String url = "http://2566-175-45-190-5.ngrok-free.app/api/posts"; // Ganti dengan URL ngrok yang benar
+    String url = "http://bbad-103-125-36-75.ngrok-free.app/api/posts"; // Ganti dengan URL ngrok yang benar
 
     http.begin(url); // Menggunakan HTTP, bukan HTTPS
     http.addHeader("Content-Type", "application/json");

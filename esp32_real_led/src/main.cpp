@@ -1,32 +1,41 @@
-#include <Arduino.h> // Wajib untuk PlatformIO + ESP32
-
-// Deklarasi pin LED
-int lampu = 25;
-int lampu2 = 26;
+#include <WiFi.h>
 
 void setup()
 {
-  Serial.begin(115200); // Inisialisasi komunikasi Serial
-  Serial.println("ESP32 Blinking LED");
+  Serial.begin(115200);
 
-  // Atur pin sebagai OUTPUT
-  pinMode(lampu, OUTPUT);
-  pinMode(lampu2, OUTPUT);
+  WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  delay(100);
+
+  Serial.println("Pemindaian Jaringan Wi-Fi Dimulai...");
 }
 
 void loop()
 {
-  // Nyalakan kedua LED
-  digitalWrite(lampu, HIGH);
-  digitalWrite(lampu2, HIGH);
-  Serial.println("LED ON");
+  int n = WiFi.scanNetworks();
+  Serial.println("Pemindaian Selesai");
+  if (n == 0)
+  {
+    Serial.println("Tidak ada jaringan Wi-Fi yang ditemukan.");
+  }
+  else
+  {
+    Serial.print(n);
+    Serial.println(" jaringan Wi-Fi ditemukan:");
+    for (int i = 0; i < n; ++i)
+    {
+      Serial.print(i + 1);
+      Serial.print(": ");
+      Serial.print(WiFi.SSID(i));
+      Serial.print(" (");
+      Serial.print(WiFi.RSSI(i));
+      Serial.print("dBm)");
+      Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN) ? " " : "*");
+      delay(10);
+    }
+  }
+  Serial.println("");
 
-  delay(1000); // Tunggu 1 detik
-
-  // Matikan kedua LED
-  digitalWrite(lampu, LOW);
-  digitalWrite(lampu2, LOW);
-  Serial.println("LED OFF");
-
-  delay(1000); // Tunggu 1 detik sebelum mengulang
+  delay(5000); // Lakukan pemindaian setiap 5 detik
 }
